@@ -9,11 +9,13 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 
 @Slf4j
-@Component
+//@Component
+//@Order(2)
 //@WebFilter(urlPatterns = "/test/*")a- > 모든 요청이 들어왔을때 해당 필터를 거칠것이다.
 public class CaramiFilter implements Filter {
     @Override
