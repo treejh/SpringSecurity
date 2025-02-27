@@ -8,6 +8,10 @@ spring:
     password: chill
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  security:
+    user:
+      name: jihyun
+      password: 1234
   jpa:
     hibernate:
       ddl-auto: update
@@ -19,5 +23,12 @@ spring:
 server:
   tomcat:
     threads:
-      max: 2
-      min-spare: 2
+      max: 100 #??? ??? ? ?? ?? ?
+      min-spare: 2 #?? ??? ?? ?? ??? ?
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
