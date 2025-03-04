@@ -8,6 +8,8 @@ import com.example.springsecurity.securityjpa.repository.UserRepository;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public User registUser(User user){
@@ -29,9 +31,18 @@ public class UserService {
         Role userRole = roleRepository.findByName("USER").get();
         user.setRoles(Collections.singleton(userRole));
 
+        //2. 패스워드는 반드시 암호화해서 넣어준다 ( 인코딩)
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        //3. userRepository에 넣어준다.
+        return userRepository.save(user);
 
 
+    }
 
+    //username에 해당하는 사용자가 있는지 체크
+    public boolean existUser(String username){
+        return userRepository.existsByUsername(username);
 
     }
 

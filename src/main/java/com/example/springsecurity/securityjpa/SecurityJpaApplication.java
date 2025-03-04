@@ -20,18 +20,18 @@ public class SecurityJpaApplication {
     @Bean
     public CommandLineRunner run(RoleRepository roleRepository){
         return args -> {
-            if(roleRepository.count()==0){
-                Role role = new Role();
-                role.setName("USER");
-
-                Role adminRole = new Role();
-                adminRole.setName("ADMIN");
-
-                roleRepository.saveAll(List.of(role,adminRole));
-                log.info("USER,ADMIN 권한이 추가되었습니다 ");
-            }else{
-                log.info("권한 정보가 이미 존재합니다. ");
-            }
+//            if(roleRepository.count()==0){
+//                Role role = new Role();
+//                role.setName("USER");
+//
+//                Role adminRole = new Role();
+//                adminRole.setName("ADMIN");
+//
+//                roleRepository.saveAll(List.of(role,adminRole));
+//                log.info("USER,ADMIN 권한이 추가되었습니다 ");
+//            }else{
+//                log.info("권한 정보가 이미 존재합니다. ");
+//            }
         };
     }
 }
