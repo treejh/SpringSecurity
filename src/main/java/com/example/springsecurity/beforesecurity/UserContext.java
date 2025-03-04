@@ -1,4 +1,4 @@
-package com.example.springsecurity.beforeSecurity;
+package com.example.springsecurity.beforesecurity;
 
 public class UserContext {
 

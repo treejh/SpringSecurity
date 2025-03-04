@@ -1,4 +1,4 @@
-package com.example.springsecurity.securityExam2;
+package com.example.springsecurity.securityexam2;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

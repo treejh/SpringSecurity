@@ -1,4 +1,4 @@
-package com.example.springsecurity.beforeSecurity;
+package com.example.springsecurity.beforesecurity;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;

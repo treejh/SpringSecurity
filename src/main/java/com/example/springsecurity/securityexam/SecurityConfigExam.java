@@ -1,4 +1,4 @@
-package com.example.springsecurity.securityExam;
+package com.example.springsecurity.securityexam;
 
 
 import jakarta.servlet.http.HttpSession;
