@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +21,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
     private final UserService userService;
 
+
+    @GetMapping("/welcome")
+    public String welcome(){
+        return "securityjpa/welcome";
+    }
+
+    @GetMapping("/myinfo")
+    public String myinfo(){
+        return "securityjpa/myinfo";
+    }
+
+    @GetMapping("/")
+    public String home(){
+        return "securityjpa/home";
+    }
     //회원가입 폼 요청
     @GetMapping("/signupForm")
     public String signUpPage(){
@@ -43,19 +59,5 @@ public class UserController {
         userService.registUser(user);
         return "redirect:/jpa/loginForm";
     }
-
-    @GetMapping("/myinfo")
-    public  String successPage(){
-        return "securityjpa/myinfo";
-    }
-
-    @PostMapping ("/login")
-    public String login(){
-        return "securityjpa/myinfo";
-    }
-
-
-
-
 
 }

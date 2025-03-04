@@ -1,6 +1,8 @@
 package com.example.springsecurity.securityjpa.config;
 
 
+import com.example.springsecurity.securityjpa.sercurity.CustomerUserDetailService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,18 +15,36 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @Slf4j
 public class SecurityJpaConfig {
+    private final CustomerUserDetailService customerUserDetailService;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
         http
+                //접근 가능한 url
                 .csrf(csfr ->csfr.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/jpa/signupForm","/jpa/registUser","/jpa/loginForm").permitAll()
-                        .requestMatchers("/welcome").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/jpa/myinfo","/jpa/signupForm","/jpa/registUser","/jpa/loginForm").permitAll()
+                        .requestMatchers("/jpa/welcome").hasAnyRole("USER")
                         .anyRequest().authenticated()
                 );
                 //.formLogin(Customizer.withDefaults()
+
+       //폼
+        http.formLogin(form -> form
+                .loginPage("/jpa/loginForm") //여기에 html넣는 경우는 없다. controller를 거쳐서 가는것이기 때문
+                        .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/jpa/welcome")
+        )
+                .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+        )
+                .userDetailsService(customerUserDetailService);
+
+        //userDetailService
+
 
 
         return http.build();
@@ -34,6 +54,8 @@ public class SecurityJpaConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+
 
 
 }
