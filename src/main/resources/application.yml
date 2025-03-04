@@ -10,7 +10,7 @@ spring:
 
   security:
     user:
-      name: jihyun
+      name: test
       password: 1234
   jpa:
     hibernate:
