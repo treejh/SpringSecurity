@@ -1,15 +1,22 @@
-package com.example.springsecurity.jwtexam.test;
+package com.example.springsecurity.jwtexam.basicjwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.SecretKey;
 
 public class JwtExample {
     public static void main(String[] args) {
-        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        //시크릿키 생성을 위한 알고리즘 방식
+        //SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+
+        //시크릿키를 만들기 위한 걸 직접 지정
+        String secret = "abcdefghijklmnopqrstuvwxzy123456";
+        byte[] bytes = secret.getBytes(StandardCharsets.UTF_8);
+        SecretKey secretKey  = Keys.hmacShaKeyFor(bytes);
 
         String jwt = Jwts.builder()
                 //인증 서버가 여러 개일 수도 있고, 외부 인증 서버 (구글, 카카오 등)를 쓸 수도 있기 때문에,
@@ -30,7 +37,7 @@ public class JwtExample {
                 .compact();
 
         System.out.println(jwt);
-        String newJwt = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjYXJhbWktYXBwIiwic3ViIjoiY2FyYW1pMTIzIiwiZXhwIjoxNzQxMTUzNzgzLCJyb2xlIjoiQURNSU4ifQ.12oSjT6xAkP-3ghdz2T-6Ql8Gq3gRtDB5svqFuXD_IM";
+        //String newJwt = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjYXJhbWktYXBwIiwic3ViIjoiY2FyYW1pMTIzIiwiZXhwIjoxNzQxMTUzNzgzLCJyb2xlIjoiQURNSU4ifQ.12oSjT6xAkP-3ghdz2T-6Ql8Gq3gRtDB5svqFuXD_IM";
 
         //jwt 파싱, 검증
         Claims claims = Jwts.parserBuilder()
@@ -38,7 +45,7 @@ public class JwtExample {
                 .build()
                 //parseClaimsJwt()	서명 없는 JWT (Plaintext JWT) 처리
                 //parseClaimsJws()	서명된 JWT (Signed JWT) 처리
-                .parseClaimsJws(newJwt)
+                .parseClaimsJws(jwt)
                 .getBody();
 
         System.out.println(claims.getExpiration());

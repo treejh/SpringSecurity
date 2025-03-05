@@ -26,9 +26,13 @@ server:
       max: 100 #??? ??? ? ?? ?? ?
       min-spare: 2 #?? ??? ?? ?? ??? ?
 
+jwt:
+  secretKey: 12345678901234567890123456789012
+  refreshKey: 12345678901234567890123456789012
 
 logging:
   level:
     org:
       springframework:
         security: TRACE
+
