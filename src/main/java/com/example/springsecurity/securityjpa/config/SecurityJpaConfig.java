@@ -47,6 +47,14 @@ public class SecurityJpaConfig {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/jpa/")
         )
+                //여러군데에서 로그인 가능하게 하는 허용 횟수 ( 이거 설정 전에는 어디서든지 횟수 상관없이 로그인 가능하게 한다.)
+                .sessionManagement(session -> session
+                        .maximumSessions(1) // 동시 접속 허용 개수 -> 동시 접속 허용이 1이라면 하나만 접속 가능
+                        //디폴트 false, -> 먼저 로그인한 사용자가 차단 된다. -> 차단되어서 페이지가 이동
+                        // true -> 나중에 로그인한 사용자가 차단된다. -> 이미 로그인한 애가 있어서 로그인 자체가 안됨
+                        .maxSessionsPreventsLogin(true)
+
+                )
                 .userDetailsService(customerUserDetailService);
 
         //userDetailService
