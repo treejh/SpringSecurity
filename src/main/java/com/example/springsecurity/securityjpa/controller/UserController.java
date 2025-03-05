@@ -1,6 +1,7 @@
 package com.example.springsecurity.securityjpa.controller;
 
 import com.example.springsecurity.securityjpa.domain.User;
+import com.example.springsecurity.securityjpa.domain.UserRegisterDTO;
 import com.example.springsecurity.securityjpa.repository.UserRepository;
 import com.example.springsecurity.securityjpa.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class UserController {
     public String home(){
         return "securityjpa/home";
     }
+
     //회원가입 폼 요청
     @GetMapping("/signupForm")
     public String signUpPage(){
@@ -57,6 +59,20 @@ public class UserController {
             return "securityjpa/user-error";
         }
         userService.registUser(user);
+        return "redirect:/jpa/loginForm";
+    }
+
+    //회원가입 요청(역할 여러개 들어올 경우)
+    @PostMapping("/registUser_role")
+    public String registUserRole(@ModelAttribute UserRegisterDTO userRegisterDTO){
+        if(userService.existUser(userRegisterDTO.getUsername())){
+            log.info("이미 사용중인 아이디 :: "+ userRegisterDTO.getUsername());
+            return "securityjpa/user-error";
+        }
+
+        User user = userService.registerUserRegisterDTO(userRegisterDTO);
+        System.out.println(user.getUsername());
+
         return "redirect:/jpa/loginForm";
     }
 

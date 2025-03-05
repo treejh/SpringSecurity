@@ -3,6 +3,7 @@ package com.example.springsecurity.securityjpa.sercurity;
 import com.example.springsecurity.securityjpa.domain.Role;
 import com.example.springsecurity.securityjpa.domain.User;
 import com.example.springsecurity.securityjpa.repository.UserRepository;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User.UserBuilder;
@@ -24,11 +25,11 @@ public class CustomerUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+
         if(user==null){
             throw new UsernameNotFoundException(username + " 에 해당하는 사용자가 없습니다. ");
         }
 
-        log.info("username :: "+ username);
 
         UserBuilder userBuilder = org.springframework.security.core.userdetails.User.withUsername(username);
         userBuilder.password(user.getPassword());
@@ -37,4 +38,6 @@ public class CustomerUserDetailService implements UserDetailsService {
 
         return userBuilder.build();
     }
+
+
 }

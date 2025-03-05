@@ -7,6 +7,7 @@
 </head>
 <body>
 <h1>내 정보 보기</h1>
+<!--isAuthenticated()는 사용자가 인증된 상태-->
 <div sec:authorize="isAuthenticated()">
     <p>안녕하세요. <span sec:authentication="name"></span>님!! </p>
     <p>당신의 롤은 : <span sec:authentication="principal.authorities"></span> </p>
