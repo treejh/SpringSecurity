@@ -10,10 +10,17 @@ import javax.crypto.SecretKey;
 public class JwtExample {
     public static void main(String[] args) {
         //시크릿키 생성을 위한 알고리즘 방식
+        //자동으로 적절한 길이의 시크릿키를 생성해
+        //내부적으로는 HS256에 맞는 안전한 랜덤 키를 생성.
+        //실제 서비스보다는 테스트용이나, 키 관리가 따로 필요 없는 환경에서 주로 사용.
+        //단점 : 서버 재시작하면 매번 키가 바뀜 (매번 새로 생성되니까)
         //SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
 
         //시크릿키를 만들기 위한 걸 직접 지정
+        //직접 키 값을 정해서 사용하는 방식.
+        //환경변수, 설정파일 등에 저장해두고 꺼내서 사용.
+        //서비스 운영 환경에서 보통 이렇게 사용 (키를 고정해야 서비스 재시작해도 유효한 JWT 유지 가능)
         String secret = "abcdefghijklmnopqrstuvwxzy123456";
         byte[] bytes = secret.getBytes(StandardCharsets.UTF_8);
         SecretKey secretKey  = Keys.hmacShaKeyFor(bytes);
@@ -39,7 +46,7 @@ public class JwtExample {
         System.out.println(jwt);
         //String newJwt = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjYXJhbWktYXBwIiwic3ViIjoiY2FyYW1pMTIzIiwiZXhwIjoxNzQxMTUzNzgzLCJyb2xlIjoiQURNSU4ifQ.12oSjT6xAkP-3ghdz2T-6Ql8Gq3gRtDB5svqFuXD_IM";
 
-        //jwt 파싱, 검증
+        //jwt 파싱, 검증 payload에서 데이터 빼기
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
