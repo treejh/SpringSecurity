@@ -1,4 +1,4 @@
-package com.example.springsecurity.jwtexam.jwtutil;
+package com.example.springsecurity.jwtexam.jwt.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -24,7 +24,7 @@ public class JwtTokenizer {
 
 
     //야물 파일에 있는 데이터를 가지고 온다.
-    public JwtTokenizer(@Value("{jwt.secretKey}") String accessSecret, @Value("{jwt.refreshKey}") String refreshSecret) {
+    public JwtTokenizer(@Value("${jwt.secretKey}") String accessSecret, @Value("${jwt.refreshKey}") String refreshSecret) {
         this.accessSecret = accessSecret.getBytes(StandardCharsets.UTF_8);
         this.refreshSecret = refreshSecret.getBytes(StandardCharsets.UTF_8);
     }
@@ -57,6 +57,16 @@ public class JwtTokenizer {
 
     }
 
+    //값을 꺼내려고 하니 토큰, 시크릿키를 추가할 수 있는 메서드 만듬
+    public Claims parseAccessToken(String accessToken){
+        return parseToken(accessToken,accessSecret);
+
+    }
+    public Claims parseRefreshToken(String refreshToken){
+        return parseToken(refreshToken,accessSecret);
+
+    }
+
     private static Key getSigningKey(byte[] secretKey){
         return Keys.hmacShaKeyFor(secretKey);
     }
@@ -74,7 +84,7 @@ public class JwtTokenizer {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey(secretKey))
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
     }
 
