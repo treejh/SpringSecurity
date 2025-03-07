@@ -19,4 +19,16 @@ public class CustomerAuthenticationEntryPoint implements AuthenticationEntryPoin
                          AuthenticationException authException) throws IOException, ServletException {
 
     }
+
+
+    //지금 요청이 rest인지, page인지 확인
+    //restControllr, Controller마다 응답을 다르게 ㅎ ㅐ야하기 때문
+    //✅ 요청이 AJAX 요청인지, REST API 요청인지 확인하는 메서드
+    //브라우저에서 온 요청인지, 프론트에서 AJAX로 호출한 건지 구분할 때 사용
+    private boolean isRestRequest(HttpServletRequest request) {
+        String requestedWithHeader = request.getHeader("X-Requested-With");
+
+        //ajax 만들때 생성되는 객체 XMLHttpRequest
+        return "XMLHttpRequest".equals(requestedWithHeader) || request.getRequestURI().startsWith("/api/");
+    }
 }
