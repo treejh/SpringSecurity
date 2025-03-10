@@ -2,7 +2,10 @@ package com.example.springsecurity.oauthexam.config;
 
 
 import com.example.springsecurity.oauthexam.entity.SocialUser;
+import com.example.springsecurity.oauthexam.security.CustomOAuth2AuthenticationSuccessHandler;
+import com.example.springsecurity.oauthexam.service.SocialLoginInfoService;
 import com.example.springsecurity.oauthexam.service.SocialUserService;
+import com.example.springsecurity.oauthexam.service.UserService;
 import jakarta.servlet.FilterChain;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class OAuthSecurityConfig {
 
     private final SocialUserService socialUserService;
+    private final CustomOAuth2AuthenticationSuccessHandler customOAuth2AuthenticationSuccessHandler;
 
 
     @Bean
@@ -42,13 +46,14 @@ public class OAuthSecurityConfig {
                 .cors(cors -> cors.configurationSource(configurationSource()))
                 .httpBasic(httpBasic->httpBasic.disable())
                 .oauth2Login(oauth2 -> oauth2
+                        //oauth로그인 할떄 loginform사용하겠다
                                 .loginPage("/loginform")
                                 .failureUrl("/loginFailure")
                         //소셜에서 넘어온 정보를 어떻게 처리할지
                         .userInfoEndpoint(userInfo ->userInfo
                                 .userService(this.oauth2UserService())
                                 )
-                        .successHandler()
+                        .successHandler(customOAuth2AuthenticationSuccessHandler)
                 );
 
         return http.build();
@@ -58,17 +63,14 @@ public class OAuthSecurityConfig {
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService(){
         DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
         return oauth2UserRequest ->{
-            //OAuth로그인이 되면 그 정보를 얻어옴, 그 얻어온 정보를 가지고 로직을 짜는 부분이다.
             OAuth2User oAuth2User = delegate.loadUser(oauth2UserRequest);
 
-            //소셜 로그인이 되었을때.. 해당 소설의 유저 정보를 얻어올 수 있으므로, 그 정보를 처리하는 로직을 여기 둘 수 있다.
-
-            //OAuth2 인증 과정에서 발급된 액세스 토큰(Access Token)을 가져오는 코드
+            //소셜 로그인이 되었을때..  해당 소셜의 유저 정보를 얻어올 수 있으므로,  그 정보를 처리하는 로직을 여기 둘 수 있다.
+            //얻어온 정보를 어떻게 처리 할건지는 정하기 나름이다. **
             String token = oauth2UserRequest.getAccessToken().getTokenValue();
 
-
             String provider = oauth2UserRequest.getClientRegistration().getRegistrationId();
-            String socialId = (String) oAuth2User.getAttributes().get("id");
+            String socialId = String.valueOf(oAuth2User.getAttributes().get("id"));
             String username = (String) oAuth2User.getAttributes().get("login");
             String email = (String) oAuth2User.getAttributes().get("email");
             String avatarUrl = (String) oAuth2User.getAttributes().get("avatar_url");

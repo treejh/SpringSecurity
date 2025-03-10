@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class SocialLoginInfoService {
     private final SocialLoginInfoRepository socialLoginInfoRepository;
 
-    @Transactional(readOnly = true)
     public SocialLoginInfo saveSocialLoginInfo(String provider, String socialId){
         SocialLoginInfo socialLoginInfo = new SocialLoginInfo();
         socialLoginInfo.setProvider(provider);
@@ -25,4 +24,6 @@ public class SocialLoginInfoService {
     public Optional<SocialLoginInfo> findByProviderAndUuidAndSocialId(String provider, String uuid, String socialId){
         return socialLoginInfoRepository.findByProviderAndUuidAndSocialId(provider,uuid,socialId);
     }
+
+
 }

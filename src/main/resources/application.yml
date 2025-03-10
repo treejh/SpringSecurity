@@ -8,10 +8,31 @@ spring:
     password: chill
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+#  security:
+#    user:
+#      name: test
+#      password: 1234
+
   security:
-    user:
-      name: test
-      password: 1234
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: Iv23liQTnr7dBcXgr815
+            client-secret: 46e586f70e10bad29ee00075e7474d15b6ea8637
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-name: GitHub
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: id
+
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -35,4 +56,6 @@ logging:
     org:
       springframework:
         security: TRACE
+
+
 

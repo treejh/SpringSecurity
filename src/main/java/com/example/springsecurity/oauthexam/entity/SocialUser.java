@@ -25,4 +25,5 @@ public class SocialUser {
     private String avatarUrl;
 
 
+
 }

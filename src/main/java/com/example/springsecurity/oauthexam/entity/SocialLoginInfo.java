@@ -15,6 +15,8 @@ import lombok.Setter;
 @Table(name = "social_login_info")
 @Getter
 @Setter
+//시간 체크하려고 사용한다.
+//만약 가입한다고 하고, 사용자가 가입 안할 수 있으니ㅏㄱ
 public class SocialLoginInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

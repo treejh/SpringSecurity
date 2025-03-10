@@ -1,6 +1,7 @@
 package com.example.springsecurity.oauthexam.entity;
 
-import com.example.springsecurity.jwtexam.domain.Role;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
