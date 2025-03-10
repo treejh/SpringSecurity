@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,11 +34,20 @@ public class UserApiController {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenizer jwtTokenizer;
 
+//    @PostMapping("/refreshToken")
+//    public ResponseEntity<?> requestRefresh(){
+//        //리프레시 토큰... 무슨 일 하면 좋을까 ?
+//
+//        //1. 리프레시토큰을 받으면, 내 DB에 있는지, 있을때만 다시 accessToken을 발급한다.
+//
+//    }
 
-    @GetMapping("/info")
+    @GetMapping("/api/info")
     public String info(){
         return "info";
     }
+
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody UserLoginDto userLoginDto, HttpServletResponse response){
 

@@ -11,4 +11,10 @@ public class UserController {
     public String myPage(){
         return "exam4/home";
     }
+
+
+    @GetMapping("/login-form")
+    public String loginform(){
+        return "exam4/loginformAu";
+    }
 }

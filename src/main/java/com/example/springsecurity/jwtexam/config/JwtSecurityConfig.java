@@ -1,6 +1,7 @@
 package com.example.springsecurity.jwtexam.config;
 
 
+import com.example.springsecurity.jwtexam.jwt.exception.CustomerAuthenticationEntryPoint;
 import com.example.springsecurity.jwtexam.jwt.filter.JwtAuthenticationFilter;
 import com.example.springsecurity.jwtexam.jwt.util.JwtTokenizer;
 import java.security.Security;
@@ -37,13 +38,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class JwtSecurityConfig {
 
     private final JwtTokenizer jwtTokenizer;
+    private final CustomerAuthenticationEntryPoint customerAuthenticationEntryPoint;
 
     //filterChain에 만들어진 필터를 추가한다.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/login","/login-form").permitAll()
                         .anyRequest()
                         .authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenizer), UsernamePasswordAuthenticationFilter.class) //시큐리티 필터가 시작되기전에 토근을 확인하는  로그인 필터가 실행되어야 한다. addFilterBefore사용
@@ -60,7 +62,11 @@ public class JwtSecurityConfig {
                 //익스프레스 서버에서 cors서버, http localhost 3000번 허락한다고 할때 cors 사용함
                 //같은 서버에서 데이터를 요청하면 주지만, 다른 서버에서 데이터를 요청하게 되면 안주기 때문에 cors 설정해야함
                 //특정 포트번호를 허락해준다. (어디까지 허용할지 정해줄 수 있다)
-                .cors(cors -> cors.configurationSource(configurationSource()));
+                .cors(cors -> cors.configurationSource(configurationSource()))
+                //예외가 발생했을때 어떻게 처리할지 ?
+                //여기서 추가한건, 인증되지 않는 사용자가 페이지 요청을 할떄 어떻게 처리해줄지
+                .exceptionHandling(excpetion -> excpetion
+                        .authenticationEntryPoint(customerAuthenticationEntryPoint));
 
         return http.build();
 

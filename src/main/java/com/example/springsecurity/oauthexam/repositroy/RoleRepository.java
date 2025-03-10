@@ -1,6 +1,6 @@
-package com.example.springsecurity.jwtexam.repository;
+package com.example.springsecurity.oauthexam.repositroy;
 
-import com.example.springsecurity.jwtexam.domain.Role;
+import com.example.springsecurity.oauthexam.entity.Role;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
